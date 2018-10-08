@@ -2,12 +2,15 @@
 
 import 'package:test/test.dart';
 
+import 'package:postfix_calculator/InfixToPostifix/HelperFunction.dart';
 import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/EquationCheck.dart';
+import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
 
 void main() {
 
   test(
-    "Testing the InfixToPostfix library",
+    "Testing helper function",
     (){
       // Non mapped char should return -1
       expect(operatorPriority('?'), -1);
@@ -15,9 +18,12 @@ void main() {
       assert(operatorPriority('*') > operatorPriority('+'));
       expect(operatorPriority('+'), operatorPriority('-'));
       // Checking isDot
-      String s='h.i';
-      expect(isDot(s[1]), true);
-      expect(isDot(s[0]), false);
+      expect(isDot('.'), true);
+      expect(isDot('è'), false);
+      // Checking isParentheses
+      expect(isParentheses('('), true);
+      expect(isParentheses(')'), true);
+      expect(isParentheses('o'), false);
       // Checking isNumber
       // The first 11 elements must return true
       String str = "0123456789.pgftxzbaqw";
@@ -28,13 +34,51 @@ void main() {
       for (int i=11; i<str.length; i++){
         assert(!isNumber(str[i]));
       }
+    } 
+  );
+
+  test(
+    "Testing the InfixToPostfix library",
+    (){
       // Checking infixToPostfix
       expect(infixToPostfix("1*2+3"), "1 2 * 3 + ");
       expect(infixToPostfix("1+2*3"), "1 2 3 * + ");
       expect(infixToPostfix("1*(2+3)"), "1 2 3 + * ");
       expect(infixToPostfix("1-2+3"), "1 2 - 3 + ");
-      expect(infixToPostfix("1*2^3+4"), "1 2 3 ^ * 4 + ");
+      expect(infixToPostfix("5*2^3+4"), "5 2 3 ^ * 4 + ");
       expect(infixToPostfix("1*(2+3*4)+5"), "1 2 3 4 * + * 5 + ");
+      expect(infixToPostfix("1.1+2.2"), "1.1 2.2 + ");
+    }
+  );
+
+  test(
+    "Testing EquationChecker",
+    (){
+      // Checking dot
+      expect(equationCheck('0', '.'), "0.");
+      expect(equationCheck('0.', '.'), "0.");
+      expect(equationCheck("0.3", '.'), "0.3");
+      expect(equationCheck("3+(", '.'), "3+(");
+      expect(equationCheck("3+", '.'), "3+");
+      // Checking numbers
+      expect(equationCheck('0', '1'), '1');
+      expect(equationCheck("3+0", '7'), "3+7");
+      expect(equationCheck("3+7", '7'), "3+77");
+      expect(equationCheck("3+0", '7'), "3+7");
+      expect(equationCheck("3+0.", '7'), "3+0.7");
+      // Checking operators
+      expect(equationCheck('0', '-'), "0-");
+      expect(equationCheck("0-", '+'), "0+");
+      expect(equationCheck("0-(", '+'), "0-(");
+    }
+  );
+
+  test(
+    "Testing solve postfix",
+    (){
+      // Testing postfixResolution
+      expect(postfixResolution("1 2 + "), 3);
+      expect(postfixResolution("5 2 3 ^ * 4 + "), 44);
     }
   );
 

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:postfix_calculator/InfixToPostifix/EquationChecker.dart';
+import 'package:postfix_calculator/InfixToPostifix/EquationCheck.dart';
 
 //-------------------------------------
 /// Home page widget
