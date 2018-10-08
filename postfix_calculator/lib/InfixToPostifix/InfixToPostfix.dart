@@ -13,22 +13,22 @@ String infixToPostfix(String infixEquation){
       // push = add to the stack
       // pop = remove the last added element of the stack
       // If a digit is found, keep printing digit until there are no more digit to print
-      if (isNumber(infixEquation.codeUnitAt(i))) {
+      if (isNumber(infixEquation[i])) {
         do{
           strBuff.write(infixEquation[i]);
           i++;
         // If the string ends with a number (and it's very likely) rember to not access the string beyond it's lenght
-        }while((i<infixEquation.length) && (isNumber(infixEquation.codeUnitAt(i))));
+        }while((i<infixEquation.length) && (isNumber(infixEquation[i])));
         strBuff.write(' ');
         // Must rewind i to the element of the string
         if (i >= infixEquation.length) i = infixEquation.length-1;
       } // Once the digit are all printed, I must check what is the next character, and what to do with it
-      // If an open parenthesis is found, push it to the stack
+      // If an open parentheses is found, push it to the stack
       if (infixEquation[i] == '('){
         operatorStack.add(infixEquation[i]);
       }
-      // If a closed parenthesis is found, pop all operators, from the stack, until an open parenthesis is found
-      if(infixEquation[i] == ')'){
+      // If a closed parentheses is found, pop all operators, from the stack, until an open parenthesis is found
+      else if(infixEquation[i] == ')'){
         do{
           strBuff.write(operatorStack.removeLast()+' ');
         }while(operatorStack.last != '(');
@@ -36,7 +36,7 @@ String infixToPostfix(String infixEquation){
         operatorStack.removeLast();
       }
       // If an operator is found
-      if ( isOperator(infixEquation[i]) ){
+      else if ( isOperator(infixEquation[i]) ){
         // If the stack is empy, or the precedence of the actual operator is greater than the last operator in the stack
         // push the operator in the stack
         if ((operatorStack.isEmpty) || (operatorPriority(infixEquation[i]) > operatorPriority(operatorStack.last))){
@@ -61,8 +61,9 @@ String infixToPostfix(String infixEquation){
 
 /// Take a rune (integer rappresenting Unicode code point)
 /// Return true if the rune is a number or a dot
-bool isNumber (int i){
-  // Numbers are between 48 (0) and 57 (9)
+bool isNumber (String num){
+  int i = num.codeUnitAt(0);
+  // Numbers are between 48 (0) and 57 (9), the dot is 46
   if ( (i >= 48 && i <= 57) || (i == 46) ) return true;
   return false;
 }
@@ -84,6 +85,10 @@ int operatorPriority(String c){
     case '+': return 1;
     case '-': return 1;
 
+    // case ( )
+    case '(': return 0;
+    case ')': return 0;
+
     // default
     default: return -1;
 
@@ -93,7 +98,24 @@ int operatorPriority(String c){
 
 
 /// True if the char is an operator
+/// I consider parentheses to be operators
 bool isOperator(String op){
   if ( operatorPriority(op) > -1 ) return true;
+  return false;
+}
+
+
+
+/// True if the char is a dot
+bool isDot(String chr){
+  if (chr == '.') return true;
+  return false;
+}
+
+
+
+/// True if the char is a parentheses
+bool isParentheses(String chr){
+  if ((chr == '(') || (chr==')')) return true;
   return false;
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:postfix_calculator/InfixToPostifix/EquationChecker.dart';
 
 //-------------------------------------
 /// Home page widget
@@ -18,16 +19,32 @@ class HomePage extends StatefulWidget {
 /// Home page state
 class _HomePageState extends State<HomePage>{
 
-  //
-  String str = "";
+  /// String containing the equation to solve
+  String equation = '0';
 
-  // Return a numeric button
+  /// Update the equation state each time a button is pressed
+  void updateEquation(String newInput){
+    setState(() {
+          equation = equationCheck(equation, newInput);
+        });
+  }
+
+  /// Erase the last element of the equation
+  void eraseLast() {
+    setState(() {
+        // if the string contains only 1 element, return a string with only a zero
+          if(equation.length == 1) equation = '0';
+          else equation = equation.substring(0,equation.length-1);
+        });
+  }
+
   // Expanded(MaterialButton(Conteiner(Center(Text()))))
+  /// Create a button whit the desired label
   Widget _buildButton(value){
     return Expanded(
       flex: 1,
       child: MaterialButton(
-        onPressed: () => print("$value"),
+        onPressed: () => updateEquation("$value"),
         child: Container(
           child: Center(
             child:Text(
@@ -42,7 +59,8 @@ class _HomePageState extends State<HomePage>{
     );
   }
 
-  // Return a row of button
+  /// Build a row of button
+  /// Each button has the specified label
   Widget _buildButtonRow(List values){
     // Creating a list of buttons
     List<Widget> buttons = [];
@@ -74,13 +92,17 @@ class _HomePageState extends State<HomePage>{
     var body = Container(
       child: Column(
         children: <Widget>[
-          // Equation holder (Text())
+          // Text holding the equation
+          // TODO set boundaries, the text musn't overflow from the text widget
           Expanded(
             flex: 1,
             child: Center(
               child:Padding(
                 padding: EdgeInsets.all(10.0), 
-                child: Text("Dummy text"),
+                child: Text(
+                  equation,
+                  style: TextStyle(fontSize: 45.0,),
+                ),
               ),
             ),
           ),
@@ -114,7 +136,7 @@ class _HomePageState extends State<HomePage>{
                       Expanded(
                         flex: 1,
                         child: MaterialButton(
-                          onPressed: () => print("Erase"),
+                          onPressed: () => eraseLast(),
                           child: Container(
                             child: Center(
                               child: Icon(

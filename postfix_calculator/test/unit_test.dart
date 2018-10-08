@@ -4,27 +4,29 @@ import 'package:test/test.dart';
 
 import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
 
-//import 'lib/InfixToPostfix/InfixToPostfix.dart';
-
 void main() {
 
   test(
-    "Testing the operator priority",
+    "Testing the InfixToPostfix library",
     (){
       // Non mapped char should return -1
       expect(operatorPriority('?'), -1);
       // Checking operatorPriority
       assert(operatorPriority('*') > operatorPriority('+'));
       expect(operatorPriority('+'), operatorPriority('-'));
-      //Checking isNumber
+      // Checking isDot
+      String s='h.i';
+      expect(isDot(s[1]), true);
+      expect(isDot(s[0]), false);
+      // Checking isNumber
       // The first 11 elements must return true
       String str = "0123456789.pgftxzbaqw";
       for (int i=0; i<11; i++){
-        assert(isNumber(str.codeUnitAt(i)));
+        assert(isNumber(str[i]));
       }
       // From the 12th element to the end of the string, isNumber must return false
       for (int i=11; i<str.length; i++){
-        assert(!isNumber(str.codeUnitAt(i)));
+        assert(!isNumber(str[i]));
       }
       // Checking infixToPostfix
       expect(infixToPostfix("1*2+3"), "1 2 * 3 + ");
