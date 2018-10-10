@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:postfix_calculator/InfixToPostifix/EquationCheck.dart';
+import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
 
 //-------------------------------------
 /// Home page widget
@@ -21,11 +22,20 @@ class _HomePageState extends State<HomePage>{
 
   /// String containing the equation to solve
   String equation = '0';
+  /// String containing the solution or postfix equation
+  String solution = '0';
+
+  /// Update the solution 
+  /// Should be called after updating the eqaution
+  void updateSolution(){
+    solution = infixToPostfix(equation);
+  }
 
   /// Update the equation state each time a button is pressed
   void updateEquation(String newInput){
     setState(() {
           equation = equationCheck(equation, newInput);
+          updateSolution();
         });
   }
 
@@ -35,6 +45,7 @@ class _HomePageState extends State<HomePage>{
         // if the string contains only 1 element, return a string with only a zero
           if(equation.length == 1) equation = '0';
           else equation = equation.substring(0,equation.length-1);
+          updateSolution();
         });
   }
 
@@ -95,7 +106,7 @@ class _HomePageState extends State<HomePage>{
           // Text holding the equation
           // TODO set boundaries, the text musn't overflow from the text widget
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Center(
               child:Padding(
                 padding: EdgeInsets.all(10.0), 
@@ -106,10 +117,23 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
           ),
+          //
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  solution,
+                  style: TextStyle(fontSize: 45.0,),
+                )
+              )
+            ),
+          ),
           // Gridview containing the "keyboard"
           // TODO "keyboard"
           Expanded(
-            flex: 2,
+            flex: 4,
             // There are 2 column
             //    1) Containing the numbers
             //    2) Containing the Oparation
