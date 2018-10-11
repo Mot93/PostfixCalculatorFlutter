@@ -10,14 +10,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: true,
-      title: "PostfixCalculator",
-      // TODO set the app theme
-      theme: ThemeData(
-        backgroundColor: Colors.white,
+    return Material(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: true,
+        title: "PostfixCalculator",
+        // TODO set the app theme
+        theme: ThemeData(
+          backgroundColor: Colors.white,
+        ),
+        home: HomePage(),
       ),
-      home: HomePage(),
     );
   }
 

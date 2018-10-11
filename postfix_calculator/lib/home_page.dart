@@ -1,9 +1,12 @@
 // Defining the home page of the app
+// TODO set limits on the screen
 
 import 'package:flutter/material.dart';
 
 import 'package:postfix_calculator/InfixToPostifix/EquationCheck.dart';
 import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/HelperFunction.dart';
+import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
 
 //-------------------------------------
 /// Home page widget
@@ -24,29 +27,28 @@ class _HomePageState extends State<HomePage>{
   String equation = '0';
   /// String containing the solution or postfix equation
   String solution = '0';
+  /// Font size of main text & buttons
+  /// The solution is half this size
+  double fontS = 45.0;
+  /// Label on the output button
+  String outputButtonLabel = "postfix";
+  /// Curve around the output button
+  final double outButtonRadius = 10;
 
   /// Update the solution 
   /// Should be called after updating the eqaution
-  void updateSolution(){
-    solution = infixToPostfix(equation);
-  }
-
-  /// Update the equation state each time a button is pressed
-  void updateEquation(String newInput){
-    setState(() {
-          equation = equationCheck(equation, newInput);
-          updateSolution();
-        });
-  }
-
-  /// Erase the last element of the equation
-  void eraseLast() {
-    setState(() {
-        // if the string contains only 1 element, return a string with only a zero
-          if(equation.length == 1) equation = '0';
-          else equation = equation.substring(0,equation.length-1);
-          updateSolution();
-        });
+  void updateState(String eq){
+    setState(
+      () {
+        if(eq.length<40){
+          equation = eq;
+          if (outputButtonLabel == "postfix") solution = infixToPostfix(equation);
+          else{
+            if (isNumber(equation[equation.length-1]) || equation[equation.length-1] == ')') 
+              solution = postfixResolution(infixToPostfix(equation)).toString();
+          } 
+        } 
+    });
   }
 
   // Expanded(MaterialButton(Conteiner(Center(Text()))))
@@ -54,15 +56,16 @@ class _HomePageState extends State<HomePage>{
   Widget _buildButton(value){
     return Expanded(
       flex: 1,
-      child: MaterialButton(
-        onPressed: () => updateEquation("$value"),
+      child: InkWell(
+        onTap: () => updateState(equationCheck(equation, value.toString())),
         child: Container(
-          child: Center(
-            child:Text(
-              "$value",
-              style: TextStyle(
-                fontSize: 45.0,
-              ),
+          alignment: Alignment( // Making the container as big as the parent allows
+            0.0, 0.0
+          ),
+          child:Text(
+            value.toString(),
+            style: TextStyle(
+              fontSize: fontS,
             ),
           ),
         ),
@@ -104,7 +107,6 @@ class _HomePageState extends State<HomePage>{
       child: Column(
         children: <Widget>[
           // Text holding the equation
-          // TODO set boundaries, the text musn't overflow from the text widget
           Expanded(
             flex: 2,
             child: Center(
@@ -112,24 +114,62 @@ class _HomePageState extends State<HomePage>{
                 padding: EdgeInsets.all(10.0), 
                 child: Text(
                   equation,
-                  style: TextStyle(fontSize: 45.0,),
+                  style: TextStyle(fontSize: fontS,),
                 ),
               ),
             ),
           ),
-          //
+          Divider(),
+          // Row with output button and results
           Expanded(
             flex: 1,
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  solution,
-                  style: TextStyle(fontSize: 45.0,),
-                )
+            child: Padding(
+              padding: EdgeInsets.all(3.0),
+              child: Row(
+                children: <Widget>[
+                  // Output button (postfix/result)
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(outButtonRadius)),
+                      onTap: () {
+                        if (outputButtonLabel == "postfix") outputButtonLabel = "solution";
+                        else outputButtonLabel = "postfix";
+                        updateState(equation);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(86, 86, 86, 0.1), // RGB + Opacity
+                          borderRadius: BorderRadius.all(Radius.circular(outButtonRadius)),
+                          //boxShadow: ,
+                        ),
+                        alignment: Alignment( // Making the container as big as the parent allows
+                          0.0, 0.0
+                        ),
+                        child: Text(outputButtonLabel),
+                      ),
+                    ),
+                  ),
+                  // Results text
+                  Expanded(
+                    flex: 4,
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text(
+                          solution,
+                          style: TextStyle(
+                            fontSize: (fontS/2),
+                          )
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )
             ),
           ),
+          Divider(),
           // Gridview containing the "keyboard"
           // TODO "keyboard"
           Expanded(
@@ -151,6 +191,7 @@ class _HomePageState extends State<HomePage>{
                     ],
                   ),
                 ),
+                Divider(),
                 // Operation keys
                 Expanded(
                   flex: 1,
@@ -159,15 +200,20 @@ class _HomePageState extends State<HomePage>{
                       // Erase Button
                       Expanded(
                         flex: 1,
-                        child: MaterialButton(
-                          onPressed: () => eraseLast(),
+                        child: InkWell(
+                          onTap: () {
+                            // if the string contains only 1 element, return a string with only a zero
+                            if(equation.length == 1) updateState('0');
+                            else updateState(equation.substring(0,equation.length-1));
+                          },
+                          onLongPress: () => updateState('0'),
+                          child: InkWell(
                           child: Container(
-                            child: Center(
+                            alignment: Alignment(0.0, 0.0), // Making the container as big as the parent allows
                               child: Icon(
                                 Icons.backspace,
                               ),
-                            ),
-                          ),
+                          ),),
                         ),
                       ),
                       // Buttons + - / *
