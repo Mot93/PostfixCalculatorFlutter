@@ -1,5 +1,3 @@
-import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
-
 /// Return the operator priority
 int operatorPriority(String c){
   switch(c){

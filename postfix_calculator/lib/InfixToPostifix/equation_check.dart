@@ -41,11 +41,20 @@ String equationCheck(String equation, String newInput){
   // If we enter an operator
   } else if (isOperator(newInput)){
     if (isParentheses(newInput)){
-      // TODO hadling Pharentheses
+      print("Big P");
+      if ((newInput==')')) // ')' there has to be open bracket, it has to come after a number (and not a .)
+        if ((openParentheses(equation)>0) && (isNumber(lastChr(equation))) && (lastChr(equation)!='.'))
+          newEquation.write(equation + ')');
+        else 
+          newEquation.write(equation);
+      else // '(' can only appear after operator
+        if (isOperator(lastChr(equation)))
+          newEquation.write(equation + '(');
+        else 
+          newEquation.write(equation);
     }else{ // if it's an operator
-      // TODO allow - for neg number
-      // TODO can't add operator after open parenthesys
-      if (lastChr(equation) == '(') {
+      // TODO: allow - for neg number
+      if (lastChr(equation) == '(') { // can't add operator after open parenthesys
         newEquation.write(equation);
       }else if (isNumber(lastChr(equation))){
         newEquation.write(equation + newInput);
@@ -54,7 +63,5 @@ String equationCheck(String equation, String newInput){
       }
     }
   }
-  // TODO rember to replace the dummy with the actual code
   return newEquation.toString();
-  //return equation + newInput;
 }

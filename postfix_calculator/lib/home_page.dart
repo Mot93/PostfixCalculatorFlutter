@@ -1,12 +1,11 @@
 // Defining the home page of the app
-// TODO set limits on the screen
 
 import 'package:flutter/material.dart';
 
 import 'package:postfix_calculator/InfixToPostifix/equation_check.dart';
-import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/infix_to_postfix.dart';
 import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
-import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/solve_postfix.dart';
 
 //-------------------------------------
 /// Home page widget
@@ -64,6 +63,7 @@ class _HomePageState extends State<HomePage>{
           if (outputButtonLabel == "postfix"){ // postfix
             solution = infixToPostfix(equation);
           }else{ // solution
+            print("error my friend");
             solution = tempSolution.toString();
           } 
 
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage>{
 
     // Definin the AppBar
     // Using final because I won't change my appBar
-    // TODO add navigation button to the bar
+    // TODO: add navigation button to the bar
     var appBar = AppBar(
       title: Text("Postfix Calculator"),
     );
@@ -189,8 +189,9 @@ class _HomePageState extends State<HomePage>{
             ),
           ),
           Divider(),
+          // Paranthesys row
+          _buildButtonRow(['(',')']),
           // Gridview containing the "keyboard"
-          // TODO "keyboard"
           Expanded(
             flex: 4,
             // There are 2 column

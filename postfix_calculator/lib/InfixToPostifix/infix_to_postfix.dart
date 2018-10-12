@@ -31,9 +31,9 @@ String infixToPostfix(String infixEquation){
       }
       // If a closed parentheses is found, pop all operators, from the stack, until an open parenthesis is found
       else if(infixEquation[i] == ')'){
-        do{
+        while(operatorStack.last != '('){
           strBuff.write(operatorStack.removeLast()+' ');
-        }while(operatorStack.last != '(');
+        }
         // Discarding the opern parenthesis
         operatorStack.removeLast();
       }

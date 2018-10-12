@@ -3,9 +3,9 @@
 import 'package:test/test.dart';
 
 import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
-import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/infix_to_postfix.dart';
 import 'package:postfix_calculator/InfixToPostifix/equation_check.dart';
-import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/solve_postfix.dart';
 
 void main() {
 
@@ -85,6 +85,12 @@ void main() {
       expect(equationCheck('0', '-'), "0-");
       expect(equationCheck("0-", '+'), "0+");
       expect(equationCheck("0-(", '+'), "0-(");
+      // Checking parentheses
+      expect(equationCheck("3+2.", '('), "3+2.");
+      expect(equationCheck("3+2.", ')'), "3+2.");
+      expect(equationCheck("3+", '('), "3+(");
+      expect(equationCheck("3+2", ')'), "3+2");
+      expect(equationCheck("3+(2", ')'), "3+(2)");
     }
   );
 
@@ -95,6 +101,7 @@ void main() {
       expect(postfixResolution("1 2 + "), 3);
       expect(postfixResolution("5 2 3 ^ * 4 + "), 44);
       expect(solveEquation("1+2"), 3);
+      expect(solveEquation("1+(0"), 1.0);
     }
   );
 

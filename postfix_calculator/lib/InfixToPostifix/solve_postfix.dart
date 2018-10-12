@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
-import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
+import 'package:postfix_calculator/InfixToPostifix/infix_to_postfix.dart';
 
 double postfixResolution(String postfixEquation){
   List<String> postfixList = postfixEquation.split(" ");
@@ -14,7 +14,7 @@ double postfixResolution(String postfixEquation){
       numberStack.add(performOperation(x, numberStack.removeLast(), numberStack.removeLast()));
     } 
   } // For
-  // TODO, if the stack contains more than an element, throw an exception
+  // TODO:, if the stack contains more than an element, throw an exception
   return numberStack.removeLast();
 }
 
@@ -44,5 +44,5 @@ double performOperation(String op, double y, double x){
 
 /// Take an infix equation and return the solution (double)
 double solveEquation(String equation){
-  return postfixResolution(infixToPostfix(equation)+missingParentheses(equation));
+  return postfixResolution(infixToPostfix(equation+missingParentheses(equation)));
 }

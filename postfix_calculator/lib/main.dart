@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: true,
         title: "PostfixCalculator",
-        // TODO set the app theme
+        // TODO: set the app theme
         theme: ThemeData(
           backgroundColor: Colors.white,
         ),
