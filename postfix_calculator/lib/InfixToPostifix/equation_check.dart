@@ -41,7 +41,6 @@ String equationCheck(String equation, String newInput){
   // If we enter an operator
   } else if (isOperator(newInput)){
     if (isParentheses(newInput)){
-      print("Big P");
       if ((newInput==')')) // ')' there has to be open bracket, it has to come after a number (and not a .)
         if ((openParentheses(equation)>0) && (isNumber(lastChr(equation))) && (lastChr(equation)!='.'))
           newEquation.write(equation + ')');

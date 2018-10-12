@@ -110,19 +110,19 @@ String missingParentheses(String eq){
 
 
 
-/// Return an euation with the needed neutral element
-String eqWithNeutralElement(String equation){
-  StringBuffer eq = new StringBuffer();
+/// Return the neutral element of an equation
+String eqNeutralElement(String equation){
+  String neutralEle = "";
   // After an operator add its neutral element
   if(isOperator(lastChr(equation)) && lastChr(equation) != '(') 
-    eq.write(equation+neutralElement(lastChr(equation)));
+    neutralEle = neutralElement(lastChr(equation));
   else{ // after an open bracket search for the last operator and add its neutral element
     int i=equation.length-1;
     while((i>-1) && (equation[i]=='(')){
       i--; // Repeat until something different than ( is found
     }
-    if(isOperator(equation[i])) 
-      eq.write(equation+neutralElement(equation[i]));
+    if(isOperator(equation[i])) // You are never too sure
+      neutralEle = neutralElement(equation[i]);
   }
-  return eq.toString();
+  return neutralEle;
 }

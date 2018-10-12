@@ -45,10 +45,10 @@ void main() {
       expect(missingParentheses("1+((6)"), ')');
       expect(missingParentheses("1+(3)"), "");
       // Testing eqWithNeutralElement
-      expect(eqWithNeutralElement("1+"), "1+0");
-      expect(eqWithNeutralElement("1*"), "1*1");
-      expect(eqWithNeutralElement("1+("), "1+(0");
-      expect(eqWithNeutralElement("1+((("), "1+(((0");
+      expect(eqNeutralElement("1+"), '0');
+      expect(eqNeutralElement("1*"), '1');
+      expect(eqNeutralElement("1+("), '0');
+      expect(eqNeutralElement("1+((("), '0');
     } 
   );
 
@@ -100,8 +100,11 @@ void main() {
       // Testing postfixResolution
       expect(postfixResolution("1 2 + "), 3);
       expect(postfixResolution("5 2 3 ^ * 4 + "), 44);
+      // Testing solveEquation
       expect(solveEquation("1+2"), 3);
       expect(solveEquation("1+(0"), 1.0);
+      // Testing missingNeutralElements
+      expect(missingNeutralElement("9+"), '0');
     }
   );
 

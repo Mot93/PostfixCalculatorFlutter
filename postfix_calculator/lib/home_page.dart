@@ -41,27 +41,19 @@ class _HomePageState extends State<HomePage>{
     setState(
       () {
         if(eq.length<40){ // Max length of the equation
-          StringBuffer tempSolution = new StringBuffer();
+          String tempSolution = "";
           equation = eq;
 
           // Checking if the equation is correct by trying to solving it
           try{
-            // If the equation ends with a number or ) just add the missing parentheses
-            if (isNumber(lastChr(equation)) || lastChr(equation) == ')') // if the equation ends with a ) or a number, solve it
-              if(lastChr(equation) == '.') // Add a zero after a .
-                tempSolution.write(solveEquation(equation+'0').toString()); 
-              else 
-                tempSolution.write(solveEquation(equation).toString()); 
-            else{ // otherwise, add the neutral element needed to solve the equation and the missing parentheses
-              tempSolution.write(solveEquation(eqWithNeutralElement(equation)));
-            }            
+            tempSolution = solveEquation(equation).toString();            
           } catch(e) { // If the equation is not correct, return an empty solution
-            tempSolution.clear();
+            tempSolution = "";
           }
 
           // Returning either the postfix or the solution
           if (outputButtonLabel == "postfix"){ // postfix
-            solution = infixToPostfix(equation);
+            solution = infixToPostfix(equation + missingParentheses(eq));
           }else{ // solution
             print("error my friend");
             solution = tempSolution.toString();

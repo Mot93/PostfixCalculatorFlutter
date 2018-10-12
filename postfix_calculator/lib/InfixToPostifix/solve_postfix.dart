@@ -42,7 +42,25 @@ double performOperation(String op, double y, double x){
 
 
 
+/// Find missing neutral element
+String missingNeutralElement(String equation){
+  String missingNeutralElement = "";
+  if(isNumber(lastChr(equation)) || lastChr(equation)==')'){ // No neutral elements, unless there is a .
+    if(lastChr(equation) == '.') 
+      missingNeutralElement = '0';
+  } else // Needed neutral element
+    missingNeutralElement = eqNeutralElement(equation);
+  return missingNeutralElement;
+}
+
+
+
 /// Take an infix equation and return the solution (double)
 double solveEquation(String equation){
-  return postfixResolution(infixToPostfix(equation+missingParentheses(equation)));
+  //print("(solveEquation) Eq: "+equation);
+  //print("(solveEquation) Missing neutral: "+missingNeutralElement(equation)+",");
+  //print("(solveEquation) Missing parentheses: "+missingParentheses(equation)+",");
+  //print("(solveEquation) Full equation: "+equation+missingNeutralElement(equation)+missingParentheses(equation)+",");
+  //print("(solveEquation) Postfix Equation: "+infixToPostfix(equation+missingNeutralElement(equation)+missingParentheses(equation)));
+  return postfixResolution(infixToPostfix(equation+missingNeutralElement(equation)+missingParentheses(equation)));
 }

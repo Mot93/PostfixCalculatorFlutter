@@ -34,8 +34,7 @@ String infixToPostfix(String infixEquation){
         while(operatorStack.last != '('){
           strBuff.write(operatorStack.removeLast()+' ');
         }
-        // Discarding the opern parenthesis
-        operatorStack.removeLast();
+        operatorStack.removeLast(); // Discarding the opern parenthesis
       }
       // If an operator is found
       else if ( isOperator(infixEquation[i]) ){
