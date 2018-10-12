@@ -2,9 +2,9 @@
 
 import 'package:test/test.dart';
 
-import 'package:postfix_calculator/InfixToPostifix/HelperFunction.dart';
+import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
 import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
-import 'package:postfix_calculator/InfixToPostifix/EquationCheck.dart';
+import 'package:postfix_calculator/InfixToPostifix/equation_check.dart';
 import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
 
 void main() {
@@ -34,6 +34,21 @@ void main() {
       for (int i=11; i<str.length; i++){
         assert(!isNumber(str[i]));
       }
+      // Testing lastChr
+      expect(lastChr("hello"), 'o');
+      expect(lastChr("bye"), 'e');
+      expect(lastChr("strawbery"), 'y');
+      expect(lastChr("1"), '1');
+      // Testing openParentheses and missingParentheses
+      expect(missingParentheses("1+("), ')');
+      expect(missingParentheses("1+((6"), "))");
+      expect(missingParentheses("1+((6)"), ')');
+      expect(missingParentheses("1+(3)"), "");
+      // Testing eqWithNeutralElement
+      expect(eqWithNeutralElement("1+"), "1+0");
+      expect(eqWithNeutralElement("1*"), "1*1");
+      expect(eqWithNeutralElement("1+("), "1+(0");
+      expect(eqWithNeutralElement("1+((("), "1+(((0");
     } 
   );
 
@@ -79,6 +94,7 @@ void main() {
       // Testing postfixResolution
       expect(postfixResolution("1 2 + "), 3);
       expect(postfixResolution("5 2 3 ^ * 4 + "), 44);
+      expect(solveEquation("1+2"), 3);
     }
   );
 

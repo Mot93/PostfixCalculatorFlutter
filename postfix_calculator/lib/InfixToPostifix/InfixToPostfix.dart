@@ -1,4 +1,4 @@
-import 'package:postfix_calculator/InfixToPostifix/HelperFunction.dart';
+import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
 
 // Unicode UTF-16 table: https://www.fileformat.info/info/charset/UTF-16/list.htm
 

@@ -1,4 +1,4 @@
-import 'package:postfix_calculator/InfixToPostifix/HelperFunction.dart';
+import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
 
 /// Checks whether the new input should be 
 String equationCheck(String equation, String newInput){
@@ -58,15 +58,3 @@ String equationCheck(String equation, String newInput){
   return newEquation.toString();
   //return equation + newInput;
 }
-
-
-
-/// Return a list of numbers and the equation containing the 
-/*List equationDoubleToInt(String equation){
-  StringBuffer strBuff = new StringBuffer();
-  strBuff.write("");
-  for (var i=0; i<equation.length; i++){
-
-  }
-  return ;
-}*/

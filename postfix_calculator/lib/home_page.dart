@@ -3,9 +3,9 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:postfix_calculator/InfixToPostifix/EquationCheck.dart';
+import 'package:postfix_calculator/InfixToPostifix/equation_check.dart';
 import 'package:postfix_calculator/InfixToPostifix/InfixToPostfix.dart';
-import 'package:postfix_calculator/InfixToPostifix/HelperFunction.dart';
+import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
 import 'package:postfix_calculator/InfixToPostifix/SolvePostfix.dart';
 
 //-------------------------------------
@@ -36,22 +36,41 @@ class _HomePageState extends State<HomePage>{
   final double outButtonRadius = 10;
 
   /// Update the solution 
-  /// Should be called after updating the eqaution
+  /// The passed equation had to be cecked
+  /// To be sure that the equation is correct
   void updateState(String eq){
     setState(
       () {
-        if(eq.length<40){
+        if(eq.length<40){ // Max length of the equation
+          StringBuffer tempSolution = new StringBuffer();
           equation = eq;
-          if (outputButtonLabel == "postfix") solution = infixToPostfix(equation);
-          else{
-            if (isNumber(equation[equation.length-1]) || equation[equation.length-1] == ')') 
-              solution = postfixResolution(infixToPostfix(equation)).toString();
-          } 
-        } 
-    });
-  }
 
-  // Expanded(MaterialButton(Conteiner(Center(Text()))))
+          // Checking if the equation is correct by trying to solving it
+          try{
+            // If the equation ends with a number or ) just add the missing parentheses
+            if (isNumber(lastChr(equation)) || lastChr(equation) == ')') // if the equation ends with a ) or a number, solve it
+              if(lastChr(equation) == '.') // Add a zero after a .
+                tempSolution.write(solveEquation(equation+'0').toString()); 
+              else 
+                tempSolution.write(solveEquation(equation).toString()); 
+            else{ // otherwise, add the neutral element needed to solve the equation and the missing parentheses
+              tempSolution.write(solveEquation(eqWithNeutralElement(equation)));
+            }            
+          } catch(e) { // If the equation is not correct, return an empty solution
+            tempSolution.clear();
+          }
+
+          // Returning either the postfix or the solution
+          if (outputButtonLabel == "postfix"){ // postfix
+            solution = infixToPostfix(equation);
+          }else{ // solution
+            solution = tempSolution.toString();
+          } 
+
+        } // if max lenght
+    }); // Set State
+  } // Update state
+
   /// Create a button whit the desired label
   Widget _buildButton(value){
     return Expanded(
