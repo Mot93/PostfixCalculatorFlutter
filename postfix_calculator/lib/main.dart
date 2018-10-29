@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart'; // General purpose
 import 'package:firebase_admob/firebase_admob.dart'; // Ads
 import 'package:flutter/services.dart'; // Lock screen orientation
+import 'package:postfix_calculator/InfixToPostifix/helper_function.dart';
 
 
 import 'home_page.dart';
@@ -24,9 +25,9 @@ BannerAd myBanner = new BannerAd(
   // Replace the testAdUnitId with an ad unit id from the AdMob dash.
   // https://developers.google.com/admob/android/test-ads
   // https://developers.google.com/admob/ios/test-ads
-  // adUnitId: BannerAd.testAdUnitId, // Test
-  adUnitId: 'ca-app-pub-4047734154628476/5063815544', // Real and functioning
-  size: AdSize.smartBanner,
+  //adUnitId: 'ca-app-pub-4047734154628476/5063815544', // Do not use qhile testing
+  adUnitId: BannerAd.testAdUnitId, // Testing dummies
+  size: AdSize.smartBanner, // Height is usually 50 dp
   targetingInfo: targetingInfo,
   listener: (MobileAdEvent event) {
     print("BannerAd event is $event");
@@ -82,8 +83,12 @@ class _MyAppState extends State<MyApp>{
         home: HomePage(),
         // With this builder the whole app is going to be above the ad
         builder: (BuildContext context, Widget child){
+
+        // Device Pixel Ratio
+        //double dpr = MediaQuery.of(context).size.height;
+
           return Padding(
-            padding: EdgeInsets.only(bottom: 50.0), // The ad is only 50 px high
+            padding: EdgeInsets.only(bottom: bannerHeight(context)), // The padding is mesured in dp
             child: child,
           );
         },

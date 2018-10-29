@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart'; // General purpose
+
+
+
 /// Return the operator priority
 int operatorPriority(String c){
   switch(c){
@@ -126,3 +130,19 @@ String eqNeutralElement(String equation){
   }
   return neutralEle;
 }
+
+
+
+/// Returns the banner height.
+/// The height of a banner depends on the total height of the screen.
+/// There are 3 heights in total.
+double bannerHeight (BuildContext context){
+  double screenHeight = MediaQuery.of(context).size.height;
+  if (screenHeight <= 400.0){
+    return 32.0;
+  } else if (screenHeight <= 720.0) {
+    return 50.0;
+  } else {
+    return 90.0;
+  }
+} // banner_height

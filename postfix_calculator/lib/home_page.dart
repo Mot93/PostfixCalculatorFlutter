@@ -26,9 +26,6 @@ class _HomePageState extends State<HomePage>{
   String equation = '0';
   /// String containing the solution or postfix equation
   String solution = '0';
-  /// Font size of main text & buttons
-  /// The solution is half this size
-  double fontS = 45.0;
   /// Label on the output button
   String outputButtonLabel = "postfix";
   /// Curve around the output button
@@ -70,14 +67,8 @@ class _HomePageState extends State<HomePage>{
       child: InkWell(
         onTap: () => updateState(equationCheck(equation, value.toString())),
         child: Container(
-          alignment: Alignment( // Making the container as big as the parent allows
-            0.0, 0.0
-          ),
-          child:Text(
-            value.toString(),
-            style: TextStyle(
-              fontSize: fontS,
-            ),
+          child:FittedBox( // Make the text as big as the container allows it
+            child:Text(value.toString()),
           ),
         ),
       ),
@@ -107,7 +98,7 @@ class _HomePageState extends State<HomePage>{
 
     // Definin the AppBar
     // Using final because I won't change my appBar
-    // TODO: add navigation button to the bar
+    // TODO: add navigation button (store + steps) to the bar
     var appBar = AppBar(
       title: Text("Postfix Calculator"),
     );
@@ -119,16 +110,10 @@ class _HomePageState extends State<HomePage>{
         children: <Widget>[
           // Text holding the equation
           Expanded(
-            flex: 2,
-            child: Center(
-              child:Padding(
-                padding: EdgeInsets.all(10.0), 
-                child: Text(
-                  equation,
-                  style: TextStyle(fontSize: fontS,),
-                ),
-              ),
-            ),
+            flex: 2, 
+            child: FittedBox( // FittedBox center and size the content
+              child: Text(equation)
+            ), 
           ),
           Divider(),
           // Row with output button and results
@@ -152,7 +137,6 @@ class _HomePageState extends State<HomePage>{
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(86, 86, 86, 0.1), // RGB + Opacity
                           borderRadius: BorderRadius.all(Radius.circular(outButtonRadius)),
-                          //boxShadow: ,
                         ),
                         alignment: Alignment( // Making the container as big as the parent allows
                           0.0, 0.0
@@ -164,16 +148,8 @@ class _HomePageState extends State<HomePage>{
                   // Results text
                   Expanded(
                     flex: 4,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          solution,
-                          style: TextStyle(
-                            fontSize: (fontS/2),
-                          )
-                        ),
-                      ),
+                    child: FittedBox(
+                      child: Text(solution),
                     ),
                   ),
                 ],
